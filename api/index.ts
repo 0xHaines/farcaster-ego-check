@@ -40,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       <html>
         <head>
           <meta property="fc:frame" content="vNext" />
-          <meta property="fc:frame:image" content="https://placehold.co/600x400/000000/FFFFFF/png?text=${encodeURIComponent(responseText)}" />
+          <meta property="fc:frame:image" content="https://[VERCEL URL'NİZ]/og-image?text=${encodeURIComponent(responseText)}" />
           <meta property="fc:frame:button:1" content="Yeniden Kontrol Et" />
           <meta property="fc:frame:post_url" content="https://[VERCEL URL'NİZ]/api" />
         </head>
