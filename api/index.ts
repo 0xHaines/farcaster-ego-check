@@ -1,58 +1,43 @@
-// api/index.ts
-import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import { ImageResponse } from "@vercel/og";
+import React from 'react';
+import EgoCheckImage from '../$$text{og-image}/EgoCheck'; 
 
-// Sizin kriterlerinize uygun, sert ve felsefi yanıtlar listesi:
-const EGO_RESPONSES = [
-  "Zafer anlık, irade sonsuzdur. Kendine daha büyük bir yük bul. (Aurelius)",
-  "İlerliyor musun, yoksa sadece sürünüyor musun? Cevap, kodlarında değil, eyleminde. (Nietzsche)",
-  "Korku, fırsatı gizleyen illüzyondur. Çeliği dövmek için ateşe gir. (Caesar)",
-  "Topluluk seni izliyor. Kibir, düşüşün ilk adımıdır. Dik dur. (Seneca)",
-  "Disiplin, kaderin en güçlü silahıdır. Bugün, dünden daha iyi ol. (Einstein)",
-  "Sessizlikte çalış. Başarı, gürültü yapacaktır. Gösteri bitmeli, inşaat başlamalı. (Eliot)",
-];
+export const config = {
+  runtime: 'edge',
+};
 
-function getRandomResponse(): string {
-  const index = Math.floor(Math.random() * EGO_RESPONSES.length);
-  return EGO_RESPONSES[index];
-}
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
-  }
-
+export default async function handler(req: Request) {
   try {
-    const body: FrameRequest = req.body;
+    const url = new URL(req.url);
+    const text = url.searchParams.get("text") || "Ego Kontrol Motoru Hazır.";
 
-    // Farcaster Mesajını Doğrula (Güvenlik Kontrolü)
-    const { message } = await getFrameMessage(body);
-
-    if (!message) {
-      return res.status(500).send('Invalid Frame Message');
-    }
-
-    const responseText = getRandomResponse();
-
-    // FRAME YANITI: Yeni görseli ve butonu geri gönder
-    const frameResponse = `
+    const frameHtml = `
       <!DOCTYPE html>
       <html>
         <head>
+          <title>Farcaster Ego Check Frame</title>
           <meta property="fc:frame" content="vNext" />
-          <meta property="fc:frame:image" content="https://[VERCEL URL'NİZ]/og-image?text=${encodeURIComponent(responseText)}" />
-          <meta property="fc:frame:button:1" content="Yeniden Kontrol Et" />
-          <meta property="fc:frame:post_url" content="https://[VERCEL URL'NİZ]/api" />
+          <meta property="fc:frame:image" content="${url.origin}/api/image?text=${encodeURIComponent(text)}" />
+          <meta property="fc:frame:button:1" content="EGO'nu Kontrol Et" />
+          <meta property="fc:frame:post_url" content="${url.origin}/api/index" /> 
         </head>
-        <body><p>Ego Kontrol Sonucu</p></body>
+        <body>
+          <h1>Ego Check Frame Aktif!</h1>
+        </body>
       </html>
     `;
 
-    res.setHeader('Content-Type', 'text/html');
-    return res.status(200).send(frameResponse);
-
+    return new Response(frameHtml, { status: 200, headers: { 'Content-Type': 'text/html' } });
   } catch (error) {
     console.error(error);
-    return res.status(500).send('Internal Server Error');
+    return new Response('Internal Server Error: Function Crashed', { status: 500 });
   }
+}
+
+export async function image(req: Request) {
+  const url = new URL(req.url);
+  const text = url.searchParams.get("text") || "Ego Kontrol Motoru Hazır.";
+  const image = React.createElement(EgoCheckImage, { text: text });
+  
+  return new ImageResponse(image, { width: 1200, height: 630 });
 }
