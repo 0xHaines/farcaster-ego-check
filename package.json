@@ -6,7 +6,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "0.1.18", 
+    "@coinbase/onchainkit": "0.1.17", //
     "@vercel/node": "3.0.18",
     "satori": "0.10.13",
     "@vercel/og": "0.0.32" 
