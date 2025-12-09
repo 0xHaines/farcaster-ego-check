@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "@coinbase/onchainkit": "0.1.x", 
-    "@vercel/node": "3.0.x"
+    "@vercel/node": "3.0.x",
+    "satori": "0.10.x",
+    "satori-wasm": "0.1.x" 
   }
 }
