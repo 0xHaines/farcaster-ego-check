@@ -1,0 +1,12 @@
+{
+  "name": "farcaster-ego-check",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@coinbase/onchainkit": "^0.1.18",
+    "@vercel/node": "^3.0.1"
+  }
+}
