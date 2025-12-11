@@ -32,8 +32,10 @@ const EgoCheckImage = ({ text }) => {
 
 
 export const config = {
+  
   runtime: 'edge',
 };
+
 
 export default async function handler(req: Request) {
   try {
@@ -46,7 +48,9 @@ export default async function handler(req: Request) {
         <head>
           <title>Farcaster Ego Check Frame</title>
           <meta property="fc:frame" content="vNext" />
+          
           <meta property="fc:frame:image" content="${url.origin}/api/image?text=${encodeURIComponent(text)}" />
+          
           <meta property="fc:frame:button:1" content="EGO'nu Kontrol Et" />
           <meta property="fc:frame:post_url" content="${url.origin}/api/index" /> 
         </head>
@@ -57,16 +61,21 @@ export default async function handler(req: Request) {
       </html>
     `;
 
-    return new Response(frameHtml, { status: 200, headers: { 'Content-Type': 'text/html' } });
+    return new Response(frameHtml, { 
+      status: 200, 
+      headers: { 'Content-Type': 'text/html' } 
+    });
   } catch (error) {
     console.error(error);
     return new Response('Internal Server Error: Function Crashed', { status: 500 });
   }
 }
 
+
 export async function image(req: Request) {
   const url = new URL(req.url);
   const text = url.searchParams.get("text") || "Ego Kontrol Motoru Hazır.";
+  
   const imageElement = React.createElement(EgoCheckImage, { text: text });
   
   return new ImageResponse(imageElement, {
