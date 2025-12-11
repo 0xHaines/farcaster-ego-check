@@ -1,6 +1,35 @@
 import { ImageResponse } from "@vercel/og";
 import React from 'react';
-import EgoCheckImage from '../og-image/EgoCheck.js'; 
+
+
+const EgoCheckImage = ({ text }) => {
+    return (
+        <div style={{ 
+            display: 'flex', 
+            fontSize: 60, 
+            color: 'white', 
+            background: 'linear-gradient(to right, #1a1a1a, #333333)',
+            width: '100%', 
+            height: '100%', 
+            textAlign: 'center', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            flexDirection: 'column',
+            padding: '20px'
+        }}>
+            <div style={{ fontSize: 90, color: '#ff6600', fontWeight: 'bold' }}>
+                🧠 EGO CHECK ENGINE 🧠
+            </div>
+            <div style={{ marginTop: 20, maxWidth: '80%' }}>
+                {text}
+            </div>
+            <div style={{ marginTop: 40, fontSize: 30, color: '#aaa' }}>
+                Powered by Farcaster
+            </div>
+        </div>
+    );
+};
+
 
 export const config = {
   runtime: 'edge',
