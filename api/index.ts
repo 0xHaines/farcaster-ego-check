@@ -1,6 +1,6 @@
 import { ImageResponse } from "@vercel/og";
 import React from 'react';
-import EgoCheckImage from '../og-image/EgoCheck.tsx'; 
+import EgoCheckImage from '../og-image/EgoCheck.js'; 
 
 export const config = {
   runtime: 'edge',
@@ -9,7 +9,6 @@ export const config = {
 export default async function handler(req: Request) {
   try {
     const url = new URL(req.url);
-    // Frame'e gönderilen veriyi burada yakalayabilirsiniz (şimdilik sade tutalım)
     const text = url.searchParams.get("text") || "Ego Kontrol Motoru Hazır.";
 
     const frameHtml = `
@@ -29,22 +28,16 @@ export default async function handler(req: Request) {
       </html>
     `;
 
-    return new Response(frameHtml, { 
-      status: 200, 
-      headers: { 'Content-Type': 'text/html' } 
-    });
+    return new Response(frameHtml, { status: 200, headers: { 'Content-Type': 'text/html' } });
   } catch (error) {
     console.error(error);
     return new Response('Internal Server Error: Function Crashed', { status: 500 });
   }
 }
 
-// Görseli oluşturan uç nokta
 export async function image(req: Request) {
   const url = new URL(req.url);
   const text = url.searchParams.get("text") || "Ego Kontrol Motoru Hazır.";
-  
-  // React bileşenini ImageResponse ile görsel olarak işliyoruz
   const imageElement = React.createElement(EgoCheckImage, { text: text });
   
   return new ImageResponse(imageElement, {
